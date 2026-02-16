@@ -5,8 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-        content="EnxtFlows – Product details, case studies, and companies using this AI solution." />
-    <title>Product – EnxtFlows</title>
+        content="MyAIKart – Product details, case studies, and companies using this AI solution." />
+    <title>Product – MyAIKart</title>
     <link rel="stylesheet" href="../css/style.css" />
 </head>
 
@@ -46,7 +46,7 @@
 
         if (product) {
             const category = getCategoryById(product.category);
-            document.title = `${product.shortName} – EnxtFlows`;
+            document.title = `${product.shortName} – MyAIKart`;
 
             // Update meta
             const metaDesc = document.querySelector('meta[name="description"]');
@@ -54,7 +54,7 @@
 
             // Breadcrumb
             document.getElementById('breadcrumb').innerHTML = `
-        <a href="../index.html">EnxtFlows</a>
+        <a href="../index.html">MyAIKart</a>
         <span>›</span>
         <a href="category.html?id=${product.category}">${category ? category.name : ''}</a>
         <span>›</span>

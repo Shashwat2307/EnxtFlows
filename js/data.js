@@ -1,5 +1,5 @@
 // ============================================================
-// EnxtFlows – Product & Services Data
+// MyAIKart – Product & Services Data
 // ============================================================
 
 const CATEGORIES = [

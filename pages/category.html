@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="EnxtFlows – Browse AI products and services in this category." />
-    <title>Category – EnxtFlows</title>
+    <meta name="description" content="MyAIKart – Browse AI products and services in this category." />
+    <title>Category – MyAIKart</title>
     <link rel="stylesheet" href="../css/style.css" />
 </head>
 
@@ -50,7 +50,7 @@
         const category = getCategoryById(categoryId);
 
         if (category) {
-            document.title = `${category.name} – EnxtFlows`;
+            document.title = `${category.name} – MyAIKart`;
 
             // Category header
             document.getElementById('categoryHeader').innerHTML = `
@@ -67,7 +67,7 @@
 
             // Breadcrumb
             document.getElementById('breadcrumb').innerHTML = `
-        <a href="../index.html">EnxtFlows</a>
+        <a href="../index.html">MyAIKart</a>
         <span>›</span>
         <strong>${category.name}</strong>
       `;

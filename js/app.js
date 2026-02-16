@@ -1,5 +1,5 @@
 // ============================================================
-// EnxtFlows – Application Logic
+// MyAIKart – Application Logic
 // ============================================================
 
 // ── Utility: generate star rating HTML ──
@@ -70,7 +70,7 @@ function renderHeader(basePath = '') {
       <div class="ef-header-top">
         <a href="${basePath}index.html" class="ef-logo">
           <div>
-            Enxt<span>Flows</span>
+            MyAI<span>Kart</span>
             <span class="ef-logo-slogan">Save your ETM</span>
           </div>
         </a>
@@ -121,10 +121,10 @@ function renderFooter(basePath = '') {
       <div class="ef-footer-grid">
         <div class="ef-footer-col">
           <h4>Get to Know Us</h4>
-          <a href="#">About EnxtFlows</a>
+          <a href="#">About MyAIKart</a>
           <a href="#">Careers</a>
           <a href="#">Press Releases</a>
-          <a href="#">EnxtFlows Science</a>
+          <a href="#">MyAIKart Science</a>
         </div>
         <div class="ef-footer-col">
           <h4>Connect with Us</h4>
@@ -149,8 +149,8 @@ function renderFooter(basePath = '') {
         </div>
       </div>
       <div class="ef-footer-bottom">
-        <div class="ef-footer-logo">Enxt<span>Flows</span></div>
-        <div class="ef-footer-copy">© 2026 EnxtFlows. All rights reserved. Save your ETM.</div>
+        <div class="ef-footer-logo">MyAI<span>Kart</span></div>
+        <div class="ef-footer-copy">© 2026 MyAIKart. All rights reserved. Save your ETM.</div>
       </div>
     </footer>
   `;
