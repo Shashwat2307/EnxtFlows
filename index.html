@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="EnxtFlows – Explore AI products and services that are transforming enterprises. Browse 20+ AI solutions across 6 industry categories." />
+  <title>EnxtFlows – Save your ETM | AI Products & Services Marketplace</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <!-- Hero Banner -->
+  <section class="ef-hero">
+    <div class="ef-hero-bg-pattern"></div>
+    <div class="ef-hero-inner">
+      <div class="ef-hero-content">
+        <h1>Discover <span>AI Solutions</span> That Transform Enterprises</h1>
+        <p>Explore curated AI products and services with real case studies showing how companies are achieving measurable results across industries.</p>
+        <div class="ef-hero-buttons">
+          <a href="#categories" class="ef-btn ef-btn-primary">Explore Categories</a>
+          <a href="#all-products" class="ef-btn ef-btn-secondary">View All Products</a>
+        </div>
+        <div class="ef-hero-stats">
+          <div class="ef-hero-stat">
+            <div class="ef-hero-stat-value">20+</div>
+            <div class="ef-hero-stat-label">AI Products</div>
+          </div>
+          <div class="ef-hero-stat">
+            <div class="ef-hero-stat-value">6</div>
+            <div class="ef-hero-stat-label">Categories</div>
+          </div>
+          <div class="ef-hero-stat">
+            <div class="ef-hero-stat-value">100+</div>
+            <div class="ef-hero-stat-label">Companies</div>
+          </div>
+        </div>
+      </div>
+      <div class="ef-hero-visual">
+        <div class="ef-hero-grid">
+          <div class="ef-hero-grid-item"><span class="ef-hero-grid-item-icon">🧠</span>AI</div>
+          <div class="ef-hero-grid-item"><span class="ef-hero-grid-item-icon">🏠</span>PropTech</div>
+          <div class="ef-hero-grid-item"><span class="ef-hero-grid-item-icon">💰</span>FinTech</div>
+          <div class="ef-hero-grid-item"><span class="ef-hero-grid-item-icon">🏥</span>Health</div>
+          <div class="ef-hero-grid-item"><span class="ef-hero-grid-item-icon">🎬</span>Media</div>
+          <div class="ef-hero-grid-item"><span class="ef-hero-grid-item-icon">⚙️</span>Services</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <div class="ef-container">
+    <section class="ef-section" id="categories">
+      <div class="ef-section-header">
+        <h2 class="ef-section-title">Shop by Category</h2>
+      </div>
+      <div id="categoriesGrid" class="ef-categories-grid"></div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="ef-section">
+      <div class="ef-section-header">
+        <h2 class="ef-section-title">⭐ Featured Products</h2>
+        <a href="pages/search.html" class="ef-section-link">View all →</a>
+      </div>
+      <div id="featuredProducts" class="ef-scroll-row"></div>
+    </section>
+
+    <!-- Products by Category -->
+    <div id="categoryProducts"></div>
+
+    <!-- All Products -->
+    <section class="ef-section" id="all-products">
+      <div class="ef-section-header">
+        <h2 class="ef-section-title">All AI Products & Services</h2>
+      </div>
+      <div id="allProducts" class="ef-products-grid"></div>
+    </section>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    // Render layout
+    document.getElementById('header').innerHTML = renderHeader('');
+    document.getElementById('footer').innerHTML = renderFooter('');
+    setupSearch('');
+
+    // Render categories
+    const categoriesGrid = document.getElementById('categoriesGrid');
+    CATEGORIES.forEach(cat => {
+      const count = getProductsByCategory(cat.id).length;
+      categoriesGrid.innerHTML += renderCategoryCard(cat, count);
+    });
+
+    // Render featured (products with badges)
+    const featured = PRODUCTS.filter(p => p.badge);
+    const featuredEl = document.getElementById('featuredProducts');
+    featured.forEach(p => { featuredEl.innerHTML += renderProductCard(p); });
+
+    // Render products grouped by category
+    const catProductsEl = document.getElementById('categoryProducts');
+    CATEGORIES.forEach(cat => {
+      const products = getProductsByCategory(cat.id);
+      if (products.length === 0) return;
+      catProductsEl.innerHTML += `
+        <section class="ef-section">
+          <div class="ef-section-header">
+            <h2 class="ef-section-title">${cat.icon} ${cat.name}</h2>
+            <a href="pages/category.html?id=${cat.id}" class="ef-section-link">See all in ${cat.name} →</a>
+          </div>
+          <div class="ef-scroll-row">
+            ${products.map(p => renderProductCard(p)).join('')}
+          </div>
+        </section>
+      `;
+    });
+
+    // Render all products
+    const allProductsEl = document.getElementById('allProducts');
+    PRODUCTS.forEach(p => { allProductsEl.innerHTML += renderProductCard(p); });
+  </script>
+</body>
+</html>

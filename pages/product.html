@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="EnxtFlows – Product details, case studies, and companies using this AI solution." />
+    <title>Product – EnxtFlows</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+
+    <div id="header"></div>
+
+    <div class="ef-container">
+        <div class="ef-breadcrumb" id="breadcrumb"></div>
+        <div id="productDetail"></div>
+    </div>
+
+    <!-- Related Products -->
+    <div class="ef-container">
+        <section class="ef-section">
+            <div class="ef-section-header">
+                <h2 class="ef-section-title">Related Products</h2>
+            </div>
+            <div id="relatedProducts" class="ef-scroll-row"></div>
+        </section>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        // Render layout
+        document.getElementById('header').innerHTML = renderHeader('../');
+        document.getElementById('footer').innerHTML = renderFooter('../');
+        setupSearch('../');
+
+        // Get product from URL
+        const params = new URLSearchParams(window.location.search);
+        const productId = params.get('id');
+        const product = getProductById(productId);
+
+        if (product) {
+            const category = getCategoryById(product.category);
+            document.title = `${product.shortName} – EnxtFlows`;
+
+            // Update meta
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) metaDesc.content = product.description;
+
+            // Breadcrumb
+            document.getElementById('breadcrumb').innerHTML = `
+        <a href="../index.html">EnxtFlows</a>
+        <span>›</span>
+        <a href="category.html?id=${product.category}">${category ? category.name : ''}</a>
+        <span>›</span>
+        <strong>${product.shortName}</strong>
+      `;
+
+            // Product detail
+            const cs = product.caseStudy;
+            document.getElementById('productDetail').innerHTML = `
+        <div class="ef-product-detail">
+          <!-- Top section: Image + Info + Buy Box -->
+          <div class="ef-pd-top">
+            <div class="ef-pd-image" style="background: ${product.image}">
+              <span class="ef-pd-image-icon">${getCategoryIcon(product.category)}</span>
+            </div>
+
+            <div class="ef-pd-main">
+              <h1 class="ef-pd-title">${product.name}</h1>
+              <p class="ef-pd-tagline">${product.tagline}</p>
+              <div class="ef-pd-rating">
+                <span class="ef-stars">${renderStars(product.rating)}</span>
+                <span class="ef-pd-rating-text">${product.rating} out of 5</span>
+                <span class="ef-pd-rating-text">${product.reviews.toLocaleString()} ratings</span>
+              </div>
+              <p class="ef-pd-description">${product.description}</p>
+              <div class="ef-pd-features">
+                <h3>Key Features</h3>
+                <ul>
+                  ${product.features.map(f => `<li>${f}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+
+            <div class="ef-pd-buybox">
+              <div class="ef-pd-price">${product.price}</div>
+              <div class="ef-pd-availability">✓ Available Now</div>
+              <button class="ef-btn ef-btn-amazon" style="width:100%;margin-bottom:8px;">Request Demo</button>
+              <button class="ef-btn ef-btn-amazon" style="width:100%;background:linear-gradient(to bottom,#f7f8fa,#e7e9ec);border-color:#adb1b8;">Contact Sales</button>
+              <div class="ef-pd-buybox-info">
+                <div><span class="label">Category</span> <a href="category.html?id=${product.category}">${category ? category.name : ''}</a></div>
+                <div><span class="label">Rating</span> <span>${product.rating}/5 (${product.reviews.toLocaleString()} reviews)</span></div>
+                ${product.badge ? `<div><span class="label">Badge</span> <span style="color:var(--ef-accent);font-weight:600;">${product.badge}</span></div>` : ''}
+                <div><span class="label">Support</span> <span>24/7 Enterprise Support</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case Study -->
+          ${cs ? `
+          <div class="ef-case-study">
+            <h2>📋 Case Study: ${cs.title}</h2>
+            <div class="ef-case-study-company">by ${cs.company}</div>
+            <div class="ef-case-study-grid">
+              <div class="ef-case-study-block">
+                <h4>Challenge</h4>
+                <p>${cs.challenge}</p>
+              </div>
+              <div class="ef-case-study-block">
+                <h4>Solution</h4>
+                <p>${cs.solution}</p>
+              </div>
+            </div>
+            <div class="ef-case-study-results">
+              <h4>Results</h4>
+              <div class="ef-results-grid">
+                ${cs.results.map(r => `<div class="ef-result-item">✓ ${r}</div>`).join('')}
+              </div>
+            </div>
+          </div>
+          ` : ''}
+
+          <!-- Companies Using -->
+          <div class="ef-companies-section">
+            <h2>Companies Using ${product.shortName}</h2>
+            <div class="ef-companies-grid">
+              ${product.companiesUsing.map(c => `
+                <div class="ef-company-card">
+                  <div class="ef-company-logo">${c.logo}</div>
+                  <div>
+                    <div class="ef-company-name">${c.name}</div>
+                    <div class="ef-company-industry">${c.industry}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+            // Related products (same category, excluding current)
+            const related = getProductsByCategory(product.category).filter(p => p.id !== product.id);
+            const relatedEl = document.getElementById('relatedProducts');
+            if (related.length > 0) {
+                related.forEach(p => { relatedEl.innerHTML += renderProductCard(p); });
+                // Fix links
+                relatedEl.querySelectorAll('.ef-product-card').forEach(card => {
+                    card.href = card.href.replace('pages/', '');
+                });
+            } else {
+                // Show products from other categories
+                const other = PRODUCTS.filter(p => p.id !== product.id).slice(0, 5);
+                other.forEach(p => { relatedEl.innerHTML += renderProductCard(p); });
+                relatedEl.querySelectorAll('.ef-product-card').forEach(card => {
+                    card.href = card.href.replace('pages/', '');
+                });
+            }
+
+        } else {
+            document.getElementById('productDetail').innerHTML = `
+        <div class="ef-no-results">
+          <h2>Product Not Found</h2>
+          <p>The product you're looking for doesn't exist.</p>
+          <a href="../index.html" class="ef-btn ef-btn-primary" style="margin-top:20px;">Back to Home</a>
+        </div>
+      `;
+        }
+
+        highlightSubnav();
+    </script>
+</body>
+
+</html>

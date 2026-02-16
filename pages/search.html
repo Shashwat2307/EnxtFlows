@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EnxtFlows – Search results for AI products and services." />
+    <title>Search – EnxtFlows</title>
+    <link rel="stylesheet" href="../css/style.css" />
+</head>
+
+<body>
+
+    <div id="header"></div>
+
+    <div class="ef-filter-bar">
+        <div class="ef-container">
+            <span class="ef-results-count" id="resultsCount"></span>
+            <select class="ef-sort-select" id="sortSelect">
+                <option value="featured">Sort by: Featured</option>
+                <option value="rating-desc">Avg. Customer Rating</option>
+                <option value="reviews-desc">Most Reviews</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="ef-container">
+        <div class="ef-breadcrumb" id="breadcrumb"></div>
+        <section class="ef-section">
+            <div id="searchResults" class="ef-products-grid"></div>
+        </section>
+    </div>
+
+    <div id="footer"></div>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+        // Render layout
+        document.getElementById('header').innerHTML = renderHeader('../');
+        document.getElementById('footer').innerHTML = renderFooter('../');
+        setupSearch('../');
+
+        // Get search params
+        const params = new URLSearchParams(window.location.search);
+        const query = params.get('q') || '';
+        const catFilter = params.get('cat') || '';
+
+        // Set search input values
+        const searchInput = document.getElementById('searchInput');
+        const searchCat = document.getElementById('searchCategory');
+        if (searchInput && query) searchInput.value = query;
+        if (searchCat && catFilter) searchCat.value = catFilter;
+
+        // Filter products
+        let results = PRODUCTS;
+        if (query) {
+            results = searchProducts(query);
+        }
+        if (catFilter) {
+            results = results.filter(p => p.category === catFilter);
+        }
+
+        // Update title and breadcrumb
+        let titleText = 'All Products';
+        if (query && catFilter) {
+            const cat = getCategoryById(catFilter);
+            titleText = `"${query}" in ${cat ? cat.name : catFilter}`;
+        } else if (query) {
+            titleText = `Search results for "${query}"`;
+        } else if (catFilter) {
+            const cat = getCategoryById(catFilter);
+            titleText = cat ? cat.name : catFilter;
+        }
+
+        document.title = `${titleText} – EnxtFlows`;
+        document.getElementById('breadcrumb').innerHTML = `
+      <a href="../index.html">EnxtFlows</a>
+      <span>›</span>
+      <strong>${titleText}</strong>
+    `;
+        document.getElementById('resultsCount').textContent = `${results.length} result${results.length !== 1 ? 's' : ''} ${query ? 'for "' + query + '"' : ''}`;
+
+        function renderResults(list) {
+            const grid = document.getElementById('searchResults');
+            if (list.length === 0) {
+                grid.innerHTML = `
+          <div class="ef-no-results" style="grid-column:1/-1;">
+            <h2>No results found</h2>
+            <p>Try different keywords or browse categories</p>
+            <a href="../index.html" class="ef-btn ef-btn-primary" style="margin-top:20px;">Back to Home</a>
+          </div>
+        `;
+                return;
+            }
+            grid.innerHTML = list.map(p => renderProductCard(p)).join('');
+            // Fix links
+            grid.querySelectorAll('.ef-product-card').forEach(card => {
+                card.href = card.href.replace('pages/', '');
+            });
+        }
+
+        renderResults(results);
+
+        // Sort
+        document.getElementById('sortSelect').addEventListener('change', function () {
+            let sorted = [...results];
+            switch (this.value) {
+                case 'rating-desc': sorted.sort((a, b) => b.rating - a.rating); break;
+                case 'reviews-desc': sorted.sort((a, b) => b.reviews - a.reviews); break;
+                case 'name-asc': sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
+                case 'name-desc': sorted.sort((a, b) => b.name.localeCompare(a.name)); break;
+            }
+            renderResults(sorted);
+        });
+    </script>
+</body>
+
+</html>
