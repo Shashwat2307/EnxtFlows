@@ -1173,6 +1173,110 @@ img {
     color: var(--ef-text-secondary);
 }
 
+/* ── How It Works ── */
+.ef-how-it-works {
+    background: linear-gradient(135deg, #131921 0%, #1a2636 50%, #232f3e 100%);
+    padding: 48px 0 56px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ef-how-it-works::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--ef-accent), transparent);
+}
+
+.ef-hiw-subtitle {
+    color: #aab;
+    font-size: 1.05rem;
+    text-align: center;
+    max-width: 600px;
+    margin: -4px auto 36px;
+    line-height: 1.6;
+}
+
+.ef-hiw-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+}
+
+.ef-hiw-step {
+    flex: 1;
+    max-width: 240px;
+    text-align: center;
+    padding: 0 12px;
+    position: relative;
+}
+
+.ef-hiw-step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ef-accent);
+    color: var(--ef-primary);
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    box-shadow: 0 0 16px rgba(255, 153, 0, 0.3);
+}
+
+.ef-hiw-step-icon {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.ef-hiw-step h3 {
+    color: var(--ef-white);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.ef-hiw-step p {
+    color: #99a;
+    font-size: 0.8rem;
+    line-height: 1.55;
+}
+
+.ef-hiw-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 36px;
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+
+.ef-hiw-bottom {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.ef-hiw-guarantee {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 153, 0, 0.15);
+    border-radius: 8px;
+    padding: 14px 28px;
+    color: #ccd;
+    font-size: 0.82rem;
+    letter-spacing: 0.2px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
     .ef-pd-top {
@@ -1206,6 +1310,20 @@ img {
 
     .ef-hero-buttons {
         justify-content: center;
+    }
+
+    .ef-hiw-steps {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .ef-hiw-connector {
+        display: none;
+    }
+
+    .ef-hiw-step {
+        max-width: none;
+        flex: 0 0 calc(33.33% - 12px);
     }
 }
 
@@ -1264,6 +1382,10 @@ img {
     .ef-companies-section {
         padding: 16px;
     }
+
+    .ef-hiw-step {
+        flex: 0 0 calc(50% - 12px);
+    }
 }
 
 @media (max-width: 480px) {
@@ -1282,5 +1404,14 @@ img {
 
     .ef-footer-grid {
         grid-template-columns: 1fr;
+    }
+
+    .ef-hiw-step {
+        flex: 0 0 100%;
+    }
+
+    .ef-hiw-guarantee {
+        font-size: 0.75rem;
+        padding: 12px 16px;
     }
 }
